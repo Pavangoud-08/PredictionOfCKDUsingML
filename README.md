@@ -1,4 +1,4 @@
-# ****<h1>💡 Prediction of Chronic Kidney Disease Using Machine Learning</h1>****
+# <h1>💡 Prediction of Chronic Kidney Disease Using Machine Learning</h1>
 
 This project focuses on developing a Machine Learning-based Chronic Kidney Disease (CKD) prediction system capable of identifying early signs of CKD using clinical patient data. The system uses data preprocessing, feature engineering, and classification algorithms—primarily the Random Forest model—to classify whether a patient has CKD or not.
 
