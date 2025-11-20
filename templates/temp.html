@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction of Chronic Kidney Disease</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            background-color: #007bff;
+            padding: 10px 20px;
+        }
+
+        .navbar button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .navbar button:hover {
+            background-color: #cc0000;
+        }
+
+        .container {
+            width: 60%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            margin-top: 50px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button.submit-btn {
+            width: 100%;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button.submit-btn:hover {
+            background-color: #218838;
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .ckd-present {
+            background-color: #d9534f;
+        }
+
+        .ckd-not-present {
+            background-color: #5cb85c;
+        }
+
+        @media screen and (max-width: 768px) {
+            .form-group {
+                flex-direction: column;
+            }
+            .form-control {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar with Sign Out Button -->
+    <div class="navbar">
+        <button onclick="signOut()">Sign Out</button>
+    </div>
+
+    <div class="container">
+        <h2>Prediction of Chronic Kidney Disease</h2>
+        <form id="ckd-form">
+            <div class="form-group">
+                <div class="form-control">
+                    <label>Age:</label>
+                    <input type="number" name="age" required>
+                </div>
+                <div class="form-control">
+                    <label>Blood Pressure:</label>
+                    <input type="number" name="blood_pressure" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-control">
+                    <label>Specific Gravity:</label>
+                    <input type="number" step="0.01" name="specific_gravity" required>
+                </div>
+                <div class="form-control">
+                    <label>Albumin:</label>
+                    <input type="number" name="albumin" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-control">
+                    <label>Sugar:</label>
+                    <input type="number" name="sugar" required>
+                </div>
+                <div class="form-control">
+                    <label>Red Blood Cells:</label>
+                    <select name="red_blood_cells" required>
+                        <option value="normal">Normal</option>
+                        <option value="abnormal">Abnormal</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Predict CKD</button>
+        </form>
+
+        <!-- Display Prediction Result -->
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script>
+        function signOut() {
+            alert("You have signed out.");
+            window.location.href = "index.html";  // Redirect to home page
+        }
+
+        document.getElementById("ckd-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+
+            fetch("/predict", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultBox = document.getElementById("result");
+                resultBox.style.display = "block";
+                resultBox.textContent = data.prediction;
+
+                if (data.prediction.includes("CKD Present")) {
+                    resultBox.classList.add("ckd-present");
+                    resultBox.classList.remove("ckd-not-present");
+                } else {
+                    resultBox.classList.add("ckd-not-present");
+                    resultBox.classList.remove("ckd-present");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+
+</body>
+</html>

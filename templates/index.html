@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction of CKD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            background: #007bff;
+            padding: 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        .image-container img {
+            width: 50%;
+            max-width: 600px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 30%;
+            text-align: left;
+        }
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#home">Home</a>
+        <a onclick="openModal('signupModal')">Signup</a>
+        <a onclick="openModal('signinModal')">Sign In</a>
+    </div>
+    
+    <div class="container">
+        <h1>Prediction of Chronic Kidney Disease</h1>
+        <p>Chronic Kidney Disease (CKD) is a serious condition where the kidneys lose their ability to filter waste effectively. Early prediction can help in better treatment and prevention.</p>
+        
+        <div class="image-container">
+            <img src="ckd_image.jpg" alt="CKD Prediction Image">
+        </div>
+    </div>
+    
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2>Signup</h2>
+            <input type="text" placeholder="First Name">
+            <input type="text" placeholder="Last Name">
+            <input type="email" placeholder="Email">
+            <input type="text" placeholder="Username">
+            <input type="password" placeholder="Password">
+            <button>Create Account</button>
+        </div>
+    </div>
+    
+    <div id="signinModal" class="modal">
+        <div class="modal-content">
+            <a href="{{ url_for('login') }}">Sign In</a>
+
+
+        </div>
+    </div>
+    
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        window.onclick = function(event) {
+            var signupModal = document.getElementById('signupModal');
+            var signinModal = document.getElementById('signinModal');
+            if (event.target == signupModal) {
+                signupModal.style.display = 'none';
+            }
+            if (event.target == signinModal) {
+                signinModal.style.display = 'none';
+            }
+        }
+        function validateLogin() {
+            var username = document.getElementById('signinUsername').value;
+            var password = document.getElementById('signinPassword').value;
+            if (username === 'admin' && password === 'admin') {
+                alert('Login successful!');
+                closeModal('signinModal');
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
